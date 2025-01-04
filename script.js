@@ -1,6 +1,30 @@
+const temp = document.querySelector(".temp")
+const time = document.querySelector(".days")
+//current time code
+function newClock(){
+const timer = document.querySelector('.days');
+const currentTime = new Date();
+let hours = currentTime.getHours();
+let minutes = currentTime.getMinutes();
+  if (hours >= 12) {
+  }
+  if (hours > 12) {
+    hours = hours- 12;
+  }
+  if (hours === 0) {
+    hours = 12;
+  }
+  if (minutes < 10) {
+    minutes = "0" + minutes;
+  }
+   timer.textContent = hours + ":" + minutes;
+}
+setInterval(newClock, 1000);
+newClock();
 
-
-
+// weeks
+let days=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]
+//Current Day Code
 
 
 
