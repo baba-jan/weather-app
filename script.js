@@ -1,9 +1,8 @@
 const temp = document.querySelector(".temp");
-const temperature = document.querySelector(".temperature");
+// const temperature = document.querySelector(".temperature");
 const time = document.querySelector(".days");
 const icon = document.querySelector(".sunicon");
 const condition = document.querySelector(".condition");
-const perc = document.querySelector(".perc");
 const cel = document.querySelector(".cel");
 const fah = document.querySelector(".fah");
 const tem=document.querySelector(".tem")
@@ -14,6 +13,7 @@ const sunriset = document.querySelector(".sun");
 const humidity = document.querySelector(".humidity");
 const visibility = document.querySelector(".visibility");
 const airquality = document.querySelector(".airqua");
+const perc = document.querySelector(".perc");
 const locationElem = document.querySelector(".location"); // Element to display location
 // Function to display current time and day of the week
 function newClock() {
@@ -37,33 +37,50 @@ function newClock() {
 }
 setInterval(newClock, 1000);
 newClock();
+// code for location in search
+// const search=document.querySelector(".locbtn")
+// search.addEventListener( "submit",(e) =>{
+//   e.()
+//   const input=document.querySelector(".input")
+//   if(input){
+//     res1(input)
+//   }else{
+//      alert("please enter the city name")
+//   }
+// })
 // Fetch current weather based on city or geolocation
-const city = "jammu kashmir"; // Replace with the city of your choice
+const city = "Ananthapur"; // Replace with the city of your choice
 const tempApiKey = "EJ6UBL2JEQGYB3AA4ENASN62J";
 const weatherApiUrl = `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${city}?unitGroup=metric&key=${tempApiKey}&contentType=json`;
 fetch(weatherApiUrl)
   .then((response) => response.json())
   .then((res) => {
-    console.log(res);
-    // display location (city)
+    console.log(res);// `days` contains daily forecast data
+    
+  // code for search button
+  const input=document.querySelector(".input")
+  const input1=res.resolvedAddress.city
+    //display location (city)
     const btn=document.querySelector(".loca")
-    const location=res.address;
-    const loca1=res.address
-    btn.textContent = ` ${location}`; // Display location
+    const location=res.resolvedAddress;
+    // const loca1=res.address
+    btn.textContent=`${location}`; // Display location
     //code to get temperature in Celsius
-    const temperatureCelsius = res.currentConditions.temp;
+    const temperatureCelsius=res.currentConditions.temp;
     //for icons
     const btn1=res.currentConditions
     setCurrentIcon(btn1.icon)
-    console.log(btn1.icon);
+    console.log(btn1.icon)
+    //uv Index
     const btn2=res.currentConditions
     displayUvIndex(btn2.index)
     console.log(btn2.index);
-    
     //for temperature
     temp.textContent = `${temperatureCelsius}°C`;
-    temperature.textContent = `${res.currentConditions.temp}°C`;
-    // perc.textContent=`${res.currentConditions}`
+    // perc.textContent=`${res.currentConditions.}`
+    const percValue = res.currentConditions.precip; // Check the API response for the correct property
+    perc.textContent = ` Perc-${percValue}%`;
+    // temperature.textContent = `${res.currentConditions.temp}°C`;
     condition.textContent = `${res.currentConditions.conditions}`; 
     humidity.textContent = `${res.currentConditions.humidity}%`;
     windstatus.textContent = `${res.currentConditions.windspeed} km/h`;
@@ -95,45 +112,31 @@ cel.addEventListener("click", () => {
   fah.textContent = `${fahrenheitTemp}°F`; 
   // tem.textContent=`${fahrenheitTemp}°F`
 }); 
+// //code for perc 
+// const perc = document.querySelector(".perc");
+// temp.textContent = `${temperatureCelsius}°C`;
 //code to get result acc to values in today's highlights
 function displayUvIndex(index) {
-  const uvElement = document.querySelector('.record');  // Element to display UV index category
-  const uvValue = 10;  // Example UV index (this will be fetched dynamically from the API later)
-
+  const uvElement = document.querySelector('.record'); 
+  const uvValue = "6"
   let uvCategory = "";
-  let uvColor = "";
-
-  // Determine UV category and color based on uvValue
+  // UV category  based on uvValue
   if (uvValue >= 0 && uvValue <= 2) {
     uvCategory = "Low";
-    uvColor = "green";  // Green for Low
   } else if (uvValue >= 3 && uvValue <= 5) {
     uvCategory = "Moderate";
-    uvColor = "yellow";  // Yellow for Moderate
   } else if (uvValue >= 6 && uvValue <= 7) {
     uvCategory = "High";
-    uvColor = "orange";  // Orange for High
   } else if (uvValue >= 8 && uvValue <= 10) {
     uvCategory = "Very High";
-    uvColor = "red";  // Red for Very High
   } else if (uvValue > 10) {
     uvCategory = "Extreme";
-    uvColor = "purple";  // Purple for Extreme
   }
-
-  // Update the text and background color of the 'uvindex' element
-  uvElement.textContent = `${uvCategory}`;
-  uvElement.style.backgroundcolor = uvColor;  // Set background color based on UV category
-  // uvElement.style.color = "white";  // Make text color white for better visibility
+  uvElement.textContent = `${uvCategory}`; 
 }
-
-// // Call the function initially to display UV index based on fetched data
-// displayUvIndex();
-
 //code for icon images
 function  setCurrentIcon(icons){
   const currIcon = document.querySelector(".upIcon");
-
   if (icons === "partly-cloudy-day") {
       currIcon.src = "https://i.ibb.co/PZQXH8V/27.png";
   } else if (icons === "partly-cloudy-night") {

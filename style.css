@@ -61,7 +61,7 @@ body{
 .cont2{
   width: 100%;
   padding: 20px 40px;
-  background-color: rgba(245, 245, 245, 0.877);
+  background-color: rgb(245, 245, 245);
 }
 .cont2 .top{
  display: flex;
