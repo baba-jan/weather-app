@@ -18,7 +18,8 @@ const weeklyTem1=document.querySelector(".temperature1")
 const weeklyTem2=document.querySelector(".temperature2")
 const weeklyTem3=document.querySelector(".temperature3")
 const weeklyTem4=document.querySelector(".temperature4")
-
+const weeklyTem5=document.querySelector(".temperature5")
+const weeklyTem6=document.querySelector(".temperature6")
 const locationElem = document.querySelector(".location"); // Element to display location
 // Function to display current time and day of the week
 function newClock() {
@@ -54,32 +55,32 @@ newClock();
 //   }
 // })
 // Fetch current weather based on city or geolocation
-const city = "New York"; // Replace with the city of your choice
+const city = "new york"; // Replace with the city of your choice
 const tempApiKey = "EJ6UBL2JEQGYB3AA4ENASN62J";
 const weatherApiUrl = `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${city}?unitGroup=metric&key=${tempApiKey}&contentType=json`;
 fetch(weatherApiUrl)
   .then((response) => response.json())
   .then((res) => {
     console.log(res);
-    const dailyForecast = res.days; // `days` contains daily forecast data
-  
-    // Assuming you have 7 elements in the HTML to display 7 days of temperature
-    const dailyTemps = dailyForecast.slice(0, 7); // Get first 7 days
-
-    // Iterate over the 7 days and display the temperature for each day
+    //code for weekly temperature
+    const dailyForecast = res.days;
+    const dailyTemps = dailyForecast.slice(0, 7);
+    // selecting the weekly temperature
+    const weeklyTemps = [
+      weeklyTem,  
+      weeklyTem1, 
+      weeklyTem2, 
+      weeklyTem3,
+      weeklyTem4, 
+      weeklyTem5,
+      weeklyTem6
+    ];
     for (let i = 0; i < dailyTemps.length; i++) {
       const dayData = dailyTemps[i];
-      const dayElem = document.querySelector(`.day${i + 1}`); // Assuming you have elements with class names day1, day2, ..., day7
-      if (dayElem) {
-        // Display the day and temperature
-        weeklyTem.textContent = `${dayData.temp}°C`;
-        weeklyTem1.textContent=`${dayData.temp}°C`;
-        weeklyTem2.textContent=`${dayData.temp}°C`;
-        weeklyTem3.textContent=`${dayData.temp}°C`;
-        weeklyTem4.textContent=`${dayData.temp}°C`;
+      const tempElement = weeklyTemps[i];
+      if (tempElement) {
+        tempElement.textContent = `${dayData.temp}°C`;
       }
-      console.log(dayElem);
-      
     }
   
   // code for search button
