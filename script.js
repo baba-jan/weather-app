@@ -1,18 +1,7 @@
-const temp = document.querySelector(".temp");
-// const temperature = document.querySelector(".temperature");
-const time = document.querySelector(".days");
-const icon = document.querySelector(".sunicon");
-const condition = document.querySelector(".condition");
-const cel = document.querySelector(".cel");
-const fah = document.querySelector(".fah");
-const tem=document.querySelector(".tem")
-const uvindex = document.querySelector(".uvindex");
-const windstatus = document.querySelector(".wind");
-const sunriset = document.querySelector(".sun");
-const humidity = document.querySelector(".humidity");
-const visibility = document.querySelector(".visibility");
-const airquality = document.querySelector(".airqua");
-const perc = document.querySelector(".perc");
+const temp = document.querySelector(".temp")
+const time = document.querySelector(".days")
+const cel = document.querySelector(".cel")
+const fah = document.querySelector(".fah")
 const weeklyTem=document.querySelector(".temperature")
 const weeklyTem1=document.querySelector(".temperature1")
 const weeklyTem2=document.querySelector(".temperature2")
@@ -20,8 +9,31 @@ const weeklyTem3=document.querySelector(".temperature3")
 const weeklyTem4=document.querySelector(".temperature4")
 const weeklyTem5=document.querySelector(".temperature5")
 const weeklyTem6=document.querySelector(".temperature6")
-const locationElem = document.querySelector(".location"); // Element to display location
-// Function to display current time and day of the week
+const locationElem = document.querySelector(".location")
+const todayTem=document.querySelector(".heat")
+const todayTem1=document.querySelector(".heat1")
+const todayTem2=document.querySelector(".heat2")
+const todayTem3=document.querySelector(".heat3")
+const todayTem4=document.querySelector(".heat4")
+const todayTem5=document.querySelector(".heat5")
+const todayTem6=document.querySelector(".heat6")
+const todayTem7=document.querySelector(".heat7")
+const todayTem8=document.querySelector(".heat8")
+const todayTem9=document.querySelector(".heat9")
+const todayTem10=document.querySelector(".heat10")
+const todayTem11=document.querySelector(".heat11")
+const todayTem12=document.querySelector(".heat12")
+const todayTem13=document.querySelector(".heat13")
+const todayTem14=document.querySelector(".heat14")
+const todayTem15=document.querySelector(".heat15")
+const todayTem16=document.querySelector(".heat16")
+const todayTem17=document.querySelector(".heat17")
+const todayTem18=document.querySelector(".heat18")
+const todayTem19=document.querySelector(".heat19")
+const todayTem20=document.querySelector(".heat20")
+const todayTem21=document.querySelector(".heat21")
+const todayTem22=document.querySelector(".heat22")
+const todayTem23=document.querySelector(".heat23")
 function newClock() {
   const timer = document.querySelector('.days');
   const currDate = new Date();
@@ -55,7 +67,7 @@ newClock();
 //   }
 // })
 // Fetch current weather based on city or geolocation
-const city = "new york"; // Replace with the city of your choice
+const city = "kurnool"; // Replace with the city of your choice
 const tempApiKey = "EJ6UBL2JEQGYB3AA4ENASN62J";
 const weatherApiUrl = `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${city}?unitGroup=metric&key=${tempApiKey}&contentType=json`;
 fetch(weatherApiUrl)
@@ -82,44 +94,84 @@ fetch(weatherApiUrl)
         tempElement.textContent = `${dayData.temp}°C`;
       }
     }
-  
+  //code for today timings temperature
+  const timeForecast = res.days;
+  const dailyTemp = timeForecast.slice(0, 20);
+  // selecting the weekly temperature
+  const Temps = [
+    todayTem,
+    todayTem1,
+    todayTem2,
+    todayTem3,
+    todayTem4,
+    todayTem5,
+    todayTem6,
+    todayTem7,
+    todayTem8,
+    todayTem9,
+    todayTem10,
+    todayTem11,
+    todayTem12,
+    todayTem13,
+    todayTem14,
+    todayTem15,
+    todayTem16,
+    todayTem17
+  ];
+  for (let i = 0; i < dailyTemp.length; i++) {
+    const dayData = dailyTemp[i];
+    const tempElement = Temps[i];
+    if (tempElement) {
+      tempElement.textContent = `${dayData.temp}°C`;
+    }
+  }
+
   // code for search button
   // const input=document.querySelector(".input")
   // const input1=res.resolvedAddress.city
-    //display location (city)
+    // display location (city)
     const btn=document.querySelector(".loca")
     const location=res.resolvedAddress;
+    
     // const loca1=res.address
     btn.textContent=`${location}`; // Display location
+    
     //code to get temperature in Celsius
     const temperatureCelsius=res.currentConditions.temp;
+    
     //for icons
     const btn1=res.currentConditions
     setCurrentIcon(btn1.icon)
     console.log(btn1.icon)
+    
     //uv Index
     const btn2=res.currentConditions
     displayUvIndex(btn2.index)
     console.log(btn2.index);
+   
     //for temperature
     temp.textContent = `${temperatureCelsius}°C`;
-    // perc.textContent=`${res.currentConditions.}`
-    const percValue = res.currentConditions.precip; // Check the API response for the correct property
+    const perc = document.querySelector(".perc")
+    const percValue = res.currentConditions.precip;
     perc.textContent = ` Perc-${percValue}%`;
-    // temperature.textContent = `${res.currentConditions.temp}°C`;
+    const condition = document.querySelector(".condition")
     condition.textContent = `${res.currentConditions.conditions}`; 
+    const humidity = document.querySelector(".humidity")
     humidity.textContent = `${res.currentConditions.humidity}%`;
+    const windstatus = document.querySelector(".wind")
     windstatus.textContent = `${res.currentConditions.windspeed} km/h`;
+    const uvindex = document.querySelector(".uvindex")
     uvindex.textContent = `${res.currentConditions.uvindex}`;
-    // const record = document.querySelector(".record");
-    // record.textContent = `${res.currentConditions.record}`;
+    const sunriset = document.querySelector(".sun")
     sunriset.textContent = `${res.currentConditions.sunrise}`;
+    const visibility = document.querySelector(".visibility")
     visibility.textContent = `${res.currentConditions.visibility}`;
   })
   .catch((err) => {
     console.log(err);
   });
-// Get location (for geolocation-based weather)
+
+  // Get location (for geolocation-based weather)
 fetch("https://geolocation-db.com/json/")
   .then((data1) => data1.json())
   .then((res1) => {
@@ -128,10 +180,12 @@ fetch("https://geolocation-db.com/json/")
   .catch((err1) => {
     console.log(err1);
   });
-// Convert Celsius to Fahrenheit
+
+  // Convert Celsius to Fahrenheit
 function celToFah(temperature) {
   return ((temperature * 9) / 5 + 32).toFixed(1);
 }
+
 //Celsius to Fahrenheit conversion
 // cel.addEventListener("click", () => {
 //   const celsiusTemp = parseFloat(temp.textContent); // Assuming the temperature is in Celsius
@@ -139,6 +193,7 @@ function celToFah(temperature) {
 //   fah.textContent = `${fahrenheitTemp}°F`; 
 //   // tem.textContent=`${fahrenheitTemp}°F`
 // }); 
+
 function displayUvIndex(index) {
   const uvElement = document.querySelector('.record'); 
   const uvValue = "6"
@@ -157,6 +212,7 @@ function displayUvIndex(index) {
   }
   uvElement.textContent = `${uvCategory}`; 
 }
+
 //code for icon images
 function  setCurrentIcon(icons){
   const currIcon = document.querySelector(".upIcon");
