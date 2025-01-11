@@ -7,13 +7,18 @@ const cel = document.querySelector(".cel");
 const fah = document.querySelector(".fah");
 const tem=document.querySelector(".tem")
 const uvindex = document.querySelector(".uvindex");
-const record = document.querySelector(".record");
 const windstatus = document.querySelector(".wind");
 const sunriset = document.querySelector(".sun");
 const humidity = document.querySelector(".humidity");
 const visibility = document.querySelector(".visibility");
 const airquality = document.querySelector(".airqua");
 const perc = document.querySelector(".perc");
+const weeklyTem=document.querySelector(".temperature")
+const weeklyTem1=document.querySelector(".temperature1")
+const weeklyTem2=document.querySelector(".temperature2")
+const weeklyTem3=document.querySelector(".temperature3")
+const weeklyTem4=document.querySelector(".temperature4")
+
 const locationElem = document.querySelector(".location"); // Element to display location
 // Function to display current time and day of the week
 function newClock() {
@@ -49,17 +54,37 @@ newClock();
 //   }
 // })
 // Fetch current weather based on city or geolocation
-const city = "Ananthapur"; // Replace with the city of your choice
+const city = "New York"; // Replace with the city of your choice
 const tempApiKey = "EJ6UBL2JEQGYB3AA4ENASN62J";
 const weatherApiUrl = `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${city}?unitGroup=metric&key=${tempApiKey}&contentType=json`;
 fetch(weatherApiUrl)
   .then((response) => response.json())
   .then((res) => {
-    console.log(res);// `days` contains daily forecast data
-    
+    console.log(res);
+    const dailyForecast = res.days; // `days` contains daily forecast data
+  
+    // Assuming you have 7 elements in the HTML to display 7 days of temperature
+    const dailyTemps = dailyForecast.slice(0, 7); // Get first 7 days
+
+    // Iterate over the 7 days and display the temperature for each day
+    for (let i = 0; i < dailyTemps.length; i++) {
+      const dayData = dailyTemps[i];
+      const dayElem = document.querySelector(`.day${i + 1}`); // Assuming you have elements with class names day1, day2, ..., day7
+      if (dayElem) {
+        // Display the day and temperature
+        weeklyTem.textContent = `${dayData.temp}°C`;
+        weeklyTem1.textContent=`${dayData.temp}°C`;
+        weeklyTem2.textContent=`${dayData.temp}°C`;
+        weeklyTem3.textContent=`${dayData.temp}°C`;
+        weeklyTem4.textContent=`${dayData.temp}°C`;
+      }
+      console.log(dayElem);
+      
+    }
+  
   // code for search button
-  const input=document.querySelector(".input")
-  const input1=res.resolvedAddress.city
+  // const input=document.querySelector(".input")
+  // const input1=res.resolvedAddress.city
     //display location (city)
     const btn=document.querySelector(".loca")
     const location=res.resolvedAddress;
@@ -85,6 +110,7 @@ fetch(weatherApiUrl)
     humidity.textContent = `${res.currentConditions.humidity}%`;
     windstatus.textContent = `${res.currentConditions.windspeed} km/h`;
     uvindex.textContent = `${res.currentConditions.uvindex}`;
+    // const record = document.querySelector(".record");
     // record.textContent = `${res.currentConditions.record}`;
     sunriset.textContent = `${res.currentConditions.sunrise}`;
     visibility.textContent = `${res.currentConditions.visibility}`;
@@ -106,16 +132,12 @@ function celToFah(temperature) {
   return ((temperature * 9) / 5 + 32).toFixed(1);
 }
 //Celsius to Fahrenheit conversion
-cel.addEventListener("click", () => {
-  const celsiusTemp = parseFloat(temp.textContent); // Assuming the temperature is in Celsius
-  const fahrenheitTemp = celToFah(celsiusTemp);
-  fah.textContent = `${fahrenheitTemp}°F`; 
-  // tem.textContent=`${fahrenheitTemp}°F`
-}); 
-// //code for perc 
-// const perc = document.querySelector(".perc");
-// temp.textContent = `${temperatureCelsius}°C`;
-//code to get result acc to values in today's highlights
+// cel.addEventListener("click", () => {
+//   const celsiusTemp = parseFloat(temp.textContent); // Assuming the temperature is in Celsius
+//   const fahrenheitTemp = celToFah(celsiusTemp);
+//   fah.textContent = `${fahrenheitTemp}°F`; 
+//   // tem.textContent=`${fahrenheitTemp}°F`
+// }); 
 function displayUvIndex(index) {
   const uvElement = document.querySelector('.record'); 
   const uvValue = "6"
@@ -149,3 +171,5 @@ function  setCurrentIcon(icons){
       currIcon.src = "https://i.ibb.co/1nxNGHL/10.png";
   }
 }
+//code for weekly temperature
+
