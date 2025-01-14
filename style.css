@@ -3,6 +3,7 @@
   padding: 0;
   box-sizing: border-box;
   font-family:Arial ;
+  
 }
 body{
   display:flex;
@@ -91,9 +92,6 @@ nav .days{
 }
 .cont3{
   display: flex;
-}
-.temperature{
-  font-size: small;
 }
 .day6{
   width: 90px;

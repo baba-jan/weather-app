@@ -1,7 +1,16 @@
 const temp = document.querySelector(".temp")
 const time = document.querySelector(".days")
+const icon = document.querySelector(".sunicon");
+const condition = document.querySelector(".condition")
+const humidity = document.querySelector(".humidity")
+const windstatus = document.querySelector(".wind")
+const uvindex = document.querySelector(".uvindex")
+const sunriset = document.querySelector(".sun")
+const visibility = document.querySelector(".visibility")
+const airquality=document.querySelector(".airqua")
 const cel = document.querySelector(".cel")
 const fah = document.querySelector(".fah")
+const perc = document.querySelector(".perc")
 const weeklyTem=document.querySelector(".temperature")
 const weeklyTem1=document.querySelector(".temperature1")
 const weeklyTem2=document.querySelector(".temperature2")
@@ -56,18 +65,9 @@ function newClock() {
 setInterval(newClock, 1000);
 newClock();
 // code for location in search
-// const search=document.querySelector(".locbtn")
-// search.addEventListener( "submit",(e) =>{
-//   e.()
-//   const input=document.querySelector(".input")
-//   if(input){
-//     res1(input)
-//   }else{
-//      alert("please enter the city name")
-//   }
-// })
+// 
 // Fetch current weather based on city or geolocation
-const city = "kurnool"; // Replace with the city of your choice
+const city = "odisha"; // Replace with the city of your choice
 const tempApiKey = "EJ6UBL2JEQGYB3AA4ENASN62J";
 const weatherApiUrl = `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${city}?unitGroup=metric&key=${tempApiKey}&contentType=json`;
 fetch(weatherApiUrl)
@@ -95,45 +95,26 @@ fetch(weatherApiUrl)
       }
     }
   //code for today timings temperature
-  const timeForecast = res.days;
-  const dailyTemp = timeForecast.slice(0, 20);
-  // selecting the weekly temperature
-  const Temps = [
-    todayTem,
-    todayTem1,
-    todayTem2,
-    todayTem3,
-    todayTem4,
-    todayTem5,
-    todayTem6,
-    todayTem7,
-    todayTem8,
-    todayTem9,
-    todayTem10,
-    todayTem11,
-    todayTem12,
-    todayTem13,
-    todayTem14,
-    todayTem15,
-    todayTem16,
-    todayTem17
-  ];
-  for (let i = 0; i < dailyTemp.length; i++) {
-    const dayData = dailyTemp[i];
-    const tempElement = Temps[i];
-    if (tempElement) {
-      tempElement.textContent = `${dayData.temp}°C`;
+  const timeForecast = res.days[0].hours;
+    const dailyTemp = timeForecast.slice(0, 24);
+    const hour = [
+      todayTem, todayTem1, todayTem2, todayTem3, todayTem4, todayTem5, todayTem6, todayTem7, todayTem8, todayTem9,
+      todayTem10, todayTem11, todayTem12, todayTem13, todayTem14, todayTem15, todayTem16, todayTem17, todayTem18,
+      todayTem19, todayTem20, todayTem21, todayTem22, todayTem23
+    ];
+    for (let i = 0; i < dailyTemp.length; i++) {
+      const hourData = dailyTemp[i];
+      const tempElement = hour[i];
+      if (tempElement) {
+        tempElement.textContent = `${hourData.temp}°C`;
+      }
     }
-  }
-
-  // code for search button
-  // const input=document.querySelector(".input")
-  // const input1=res.resolvedAddress.city
-    // display location (city)
+ 
+  // code to display location 
     const btn=document.querySelector(".loca")
     const location=res.resolvedAddress;
     
-    // const loca1=res.address
+    const loca1=res.address
     btn.textContent=`${location}`; // Display location
     
     //code to get temperature in Celsius
@@ -144,28 +125,34 @@ fetch(weatherApiUrl)
     setCurrentIcon(btn1.icon)
     console.log(btn1.icon)
     
-    //uv Index
+    // to display uv Index
     const btn2=res.currentConditions
     displayUvIndex(btn2.index)
     console.log(btn2.index);
-   
-    //for temperature
+    
+    // code to uvindex
+    const uvIndexValue = res.currentConditions.uvindex;
+    displayUvIndex(uvIndexValue);
+
+    //code to access humidity 
+    const humidityValue=res.currentConditions.humidity;
+    displayHumidity(humidityValue)
+
+    //code to access visibility
+    const visibilityValue1=res.currentConditions.visibility;
+    displayVisibility(visibilityValue1)
+
+    //code for today highlights
     temp.textContent = `${temperatureCelsius}°C`;
-    const perc = document.querySelector(".perc")
     const percValue = res.currentConditions.precip;
     perc.textContent = ` Perc-${percValue}%`;
-    const condition = document.querySelector(".condition")
     condition.textContent = `${res.currentConditions.conditions}`; 
-    const humidity = document.querySelector(".humidity")
     humidity.textContent = `${res.currentConditions.humidity}%`;
-    const windstatus = document.querySelector(".wind")
     windstatus.textContent = `${res.currentConditions.windspeed} km/h`;
-    const uvindex = document.querySelector(".uvindex")
     uvindex.textContent = `${res.currentConditions.uvindex}`;
-    const sunriset = document.querySelector(".sun")
     sunriset.textContent = `${res.currentConditions.sunrise}`;
-    const visibility = document.querySelector(".visibility")
     visibility.textContent = `${res.currentConditions.visibility}`;
+    // airquality.textContent=`${res.currentConditions.airquality}`
   })
   .catch((err) => {
     console.log(err);
@@ -187,31 +174,12 @@ function celToFah(temperature) {
 }
 
 //Celsius to Fahrenheit conversion
-// cel.addEventListener("click", () => {
-//   const celsiusTemp = parseFloat(temp.textContent); // Assuming the temperature is in Celsius
-//   const fahrenheitTemp = celToFah(celsiusTemp);
-//   fah.textContent = `${fahrenheitTemp}°F`; 
-//   // tem.textContent=`${fahrenheitTemp}°F`
-// }); 
-
-function displayUvIndex(index) {
-  const uvElement = document.querySelector('.record'); 
-  const uvValue = "6"
-  let uvCategory = "";
-  // UV category  based on uvValue
-  if (uvValue >= 0 && uvValue <= 2) {
-    uvCategory = "Low";
-  } else if (uvValue >= 3 && uvValue <= 5) {
-    uvCategory = "Moderate";
-  } else if (uvValue >= 6 && uvValue <= 7) {
-    uvCategory = "High";
-  } else if (uvValue >= 8 && uvValue <= 10) {
-    uvCategory = "Very High";
-  } else if (uvValue > 10) {
-    uvCategory = "Extreme";
-  }
-  uvElement.textContent = `${uvCategory}`; 
-}
+cel.addEventListener("click", () => {
+  const celsiusTemp = parseFloat(temp.textContent); // Assuming the temperature is in Celsius
+  const fahrenheitTemp = celToFah(celsiusTemp);
+  fah.textContent = `${fahrenheitTemp}°F`; 
+  // tem.textContent=`${fahrenheitTemp}°F`
+}); 
 
 //code for icon images
 function  setCurrentIcon(icons){
@@ -228,5 +196,79 @@ function  setCurrentIcon(icons){
       currIcon.src = "https://i.ibb.co/1nxNGHL/10.png";
   }
 }
-//code for weekly temperature
 
+
+// code for icons according to weekly temperature
+// const weeklyIcon=document.querySelector(".img1")
+// const weeklyIcon1=document.querySelector(".img2")
+// const weeklyIcon2=document.querySelector(".img3")
+// const weeklyIcon3=document.querySelector(".img4")
+// const weeklyIcon4=document.querySelector(".img5")
+// const weeklyIcon5=document.querySelector(".img6")
+// const weeklyIcon6=document.querySelector(".img7")
+// function  changeIcon(icons){
+  // const currIcon =[
+  //   weeklyIcon,weeklyIcon1,weeklyIcon2,weeklyIcon3,weeklyIcon4,weeklyIcon5,weeklyIcon6
+  // ]
+//   if (icons === "partly-cloudy-day") {
+//       currIcon.src = "https://i.ibb.co/PZQXH8V/27.png";
+//   } else if (icons === "partly-cloudy-night") {
+//       currIcon.src = "https://i.ibb.co/Kzkk59k/15.png";
+//   } else if (icons === "rain") {
+//       currIcon.src = "https://i.ibb.co/kBd2NTS/39.png";
+//   } else if (icons === "clear-day") {
+//       currIcon.src = "https://i.ibb.co/rb4rrJL/26.png";
+//   } else if (icons === "clear-night") {
+//       currIcon.src = "https://i.ibb.co/1nxNGHL/10.png";
+//   }
+// }
+
+//code to display uv index value category
+function displayUvIndex(index) {
+  const uvElement = document.querySelector('.record'); 
+  let uvCategory = "";
+  //Display UV category based on UV index value
+  if (index >= 0 && index <= 2) {
+    uvCategory = "Low";
+  } else if (index >= 3 && index <= 5) {
+    uvCategory = "Moderate";
+  } else if (index >= 6 && index <= 7) {
+    uvCategory = "High";
+  } else if (index >= 8 && index <= 10) {
+    uvCategory = "Very High";
+  } else if (index > 10) {
+    uvCategory = "Extreme";
+  }
+
+  uvElement.textContent = `${uvCategory}`;
+}
+//code to display humidity value
+function displayHumidity(humidity){
+  const humidityElement=document.querySelector('.record3')
+  let humiValue='';
+  if(humidity>=0 && humidity<30){
+    humiValue='Low'
+  }else if(humidity>=31 && humidity<60){
+    humiValue='Modearte'
+  }else if (humidity>=61 && humidity<70){
+    humiValue='High'
+  }else if (humidity>=71 && humidity<90){
+    humiValue='Very High'
+  }
+  humidityElement.textContent=`${humiValue}`
+}
+//code to display visibility
+function displayVisibility(visibility){
+  const visibilityElement=document.querySelector(".record4")
+  let visibilityValue='';
+  if(visibility>=0 && visibility<=10){
+    visibilityValue='Very Poor'
+  }else if(visibility>=11 && visibility<=20){
+    visibilityValue='Un Healthy'
+  }else if(visibility>=21 && visibility<=30){
+    visibilityValue='Fair'
+  }else if(visibility>=31 && visibility<=40){
+    visibilityValue='Clear Air'
+  }
+  visibilityElement.textContent=`${visibilityValue}`
+}
